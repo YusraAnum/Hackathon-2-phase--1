@@ -87,6 +87,45 @@ def handle_view_tasks(manager: TaskManager) -> None:
     print(f"Total: {len(tasks)} tasks ({completed} complete, {incomplete} incomplete)")
 
 
+def handle_filter_by_priority(manager: TaskManager) -> None:
+    """Handle the Filter Tasks by Priority action.
+
+    Prompts user for priority level and displays only matching tasks.
+
+    Args:
+        manager: The TaskManager instance
+    """
+    print("\n--- Filter Tasks by Priority ---")
+
+    # Get priority filter
+    priority_input = input("\nEnter priority to filter (High/H, Medium/M, Low/L): ")
+    is_valid, priority, error = validate_priority(priority_input)
+
+    if not is_valid:
+        print(f"\nError: {error}")
+        return
+
+    # Get all tasks and filter by priority
+    all_tasks = manager.get_all_tasks()
+    filtered_tasks = [task for task in all_tasks if task.priority == priority]
+
+    print(f"\n--- Tasks with {priority.value} Priority ---\n")
+
+    if not filtered_tasks:
+        print(f"No {priority.value} priority tasks found.")
+        return
+
+    for task in filtered_tasks:
+        print(format_task_display(task))
+        print()
+
+    # Summary
+    completed = sum(1 for t in filtered_tasks if t.completed)
+    incomplete = len(filtered_tasks) - completed
+    print(f"Total: {len(filtered_tasks)} {priority.value} priority tasks "
+          f"({completed} complete, {incomplete} incomplete)")
+
+
 def handle_update_task(manager: TaskManager) -> None:
     """Handle the Update Task action.
 

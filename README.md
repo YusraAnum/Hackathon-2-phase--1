@@ -8,6 +8,7 @@ A command-line todo application built with Python that demonstrates clean archit
 - **Priority Levels**: Organize tasks with High, Medium, or Low priority
 - **Smart Sorting**: Tasks automatically sorted by priority, then by creation order
 - **View Tasks**: Display all tasks with priority indicators and completion status
+- **Filter by Priority**: View only High, Medium, or Low priority tasks
 - **Update Tasks**: Modify task titles, descriptions, and priorities
 - **Delete Tasks**: Remove tasks you no longer need
 - **Toggle Completion**: Mark tasks as complete or incomplete
@@ -63,10 +64,11 @@ Once the application starts, you'll see a menu with the following options:
 
 1. **Add Task** - Create a new task
 2. **View Tasks** - Display all tasks
-3. **Update Task** - Modify an existing task
-4. **Delete Task** - Remove a task
-5. **Mark Complete/Incomplete** - Toggle task completion status
-6. **Exit** - Close the application
+3. **Filter Tasks by Priority** - View only High, Medium, or Low priority tasks
+4. **Update Task** - Modify an existing task
+5. **Delete Task** - Remove a task
+6. **Mark Complete/Incomplete** - Toggle task completion status
+7. **Exit** - Close the application
 
 ### Example Session
 

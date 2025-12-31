@@ -7,10 +7,11 @@ MENU_OPTIONS = """
 
 1. Add Task
 2. View Tasks
-3. Update Task
-4. Delete Task
-5. Mark Complete/Incomplete
-6. Exit
+3. Filter Tasks by Priority
+4. Update Task
+5. Delete Task
+6. Mark Complete/Incomplete
+7. Exit
 
 """
 
@@ -26,4 +27,4 @@ def get_user_choice() -> str:
     Returns:
         The user's input as a string
     """
-    return input("Enter your choice (1-6): ").strip()
+    return input("Enter your choice (1-7): ").strip()
