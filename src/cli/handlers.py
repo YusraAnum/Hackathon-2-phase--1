@@ -1,29 +1,31 @@
 """CLI action handlers for the Todo application."""
 
-from src.models.task import Task
+from src.models.task import Task, Priority
 from src.services.task_manager import TaskManager
-from src.cli.validators import validate_integer, validate_non_empty_string
+from src.cli.validators import validate_integer, validate_non_empty_string, validate_priority
 
 
 def format_task_display(task: Task) -> str:
-    """Format a single task for display.
+    """Format a single task for display with priority indicator.
 
     Args:
         task: The task to format
 
     Returns:
-        Formatted string representation of the task
+        Formatted string representation: [ID] [PRIORITY] [STATUS] TITLE
+                                                          Description
     """
     status = "[x]" if task.completed else "[ ]"
+    priority_symbol = f"[{task.priority.display_symbol}]"
     description_line = f"    {task.description}" if task.description else "    (no description)"
-    return f"[{task.id}] {status} {task.title}\n{description_line}"
+    return f"[{task.id}] {priority_symbol} {status} {task.title}\n{description_line}"
 
 
 def handle_add_task(manager: TaskManager) -> None:
     """Handle the Add Task action.
 
-    Prompts for title and optional description, creates the task,
-    and displays confirmation.
+    Prompts for title, optional description, and optional priority.
+    Creates the task and displays confirmation.
 
     Args:
         manager: The TaskManager instance
@@ -40,12 +42,20 @@ def handle_add_task(manager: TaskManager) -> None:
     # Get description (optional)
     description = input("Enter task description (optional): ")
 
+    # Get priority (optional, defaults to Medium)
+    priority_input = input("Enter priority (High/H, Medium/M, Low/L) [default: Medium]: ")
+    is_valid, priority, error = validate_priority(priority_input)
+    if not is_valid:
+        print(f"\nError: {error}")
+        return
+
     # Create task
     try:
-        task = manager.add_task(stripped_title, description)
+        task = manager.add_task(stripped_title, description, priority)
         print(f"\nTask created successfully!")
         print(f"ID: {task.id}")
         print(f"Title: {task.title}")
+        print(f"Priority: {task.priority.value}")
         if task.description:
             print(f"Description: {task.description}")
     except ValueError as e:
@@ -80,8 +90,8 @@ def handle_view_tasks(manager: TaskManager) -> None:
 def handle_update_task(manager: TaskManager) -> None:
     """Handle the Update Task action.
 
-    Prompts for task ID and new values, updates the task,
-    and displays confirmation.
+    Prompts for task ID and allows updating title, description, and/or priority.
+    Displays confirmation after update.
 
     Args:
         manager: The TaskManager instance
@@ -104,6 +114,7 @@ def handle_update_task(manager: TaskManager) -> None:
     # Show current values
     print(f"\nCurrent title: {task.title}")
     print(f"Current description: {task.description or '(empty)'}")
+    print(f"Current priority: {task.priority.value}")
 
     # Get new title
     new_title_input = input("\nEnter new title (press Enter to keep current): ")
@@ -120,9 +131,22 @@ def handle_update_task(manager: TaskManager) -> None:
     new_desc_input = input("Enter new description (press Enter to keep current): ")
     new_description = new_desc_input if new_desc_input else None
 
+    # Get new priority
+    new_priority_input = input(
+        "Enter new priority (High/H, Medium/M, Low/L, press Enter to keep current): "
+    )
+    new_priority = None
+    if new_priority_input.strip():  # Only validate if user entered something
+        is_valid, new_priority, error = validate_priority(new_priority_input)
+        if not is_valid:
+            print(f"\nError: {error}")
+            return
+
     # Update task
     try:
-        updated = manager.update_task(task_id, title=new_title, description=new_description)
+        updated = manager.update_task(
+            task_id, title=new_title, description=new_description, priority=new_priority
+        )
         if updated:
             print(f"\nTask {task_id} updated successfully!")
         else:

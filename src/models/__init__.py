@@ -1,5 +1,5 @@
 """Data models for the Todo CLI application."""
 
-from src.models.task import Task
+from src.models.task import Task, Priority
 
-__all__ = ["Task"]
+__all__ = ["Task", "Priority"]

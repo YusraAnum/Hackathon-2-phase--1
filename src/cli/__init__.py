@@ -8,7 +8,7 @@ from src.cli.handlers import (
     handle_delete_task,
     handle_toggle_complete,
 )
-from src.cli.validators import validate_integer, validate_non_empty_string
+from src.cli.validators import validate_integer, validate_non_empty_string, validate_priority
 
 __all__ = [
     "display_menu",
@@ -20,4 +20,5 @@ __all__ = [
     "handle_toggle_complete",
     "validate_integer",
     "validate_non_empty_string",
+    "validate_priority",
 ]

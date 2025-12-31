@@ -4,9 +4,11 @@ A command-line todo application built with Python that demonstrates clean archit
 
 ## Features
 
-- **Add Tasks**: Create new tasks with title and optional description
-- **View Tasks**: Display all tasks with their completion status
-- **Update Tasks**: Modify task titles and descriptions
+- **Add Tasks**: Create new tasks with title, optional description, and priority level
+- **Priority Levels**: Organize tasks with High, Medium, or Low priority
+- **Smart Sorting**: Tasks automatically sorted by priority, then by creation order
+- **View Tasks**: Display all tasks with priority indicators and completion status
+- **Update Tasks**: Modify task titles, descriptions, and priorities
 - **Delete Tasks**: Remove tasks you no longer need
 - **Toggle Completion**: Mark tasks as complete or incomplete
 - **Menu-Driven Interface**: Simple numbered menu for easy navigation
@@ -83,17 +85,29 @@ All data is stored in memory and will be lost when you exit.
 Enter your choice (1-6): 1
 
 Enter task title: Buy groceries
-Enter task description (optional, press Enter to skip): Get milk, eggs, and bread
+Enter task description (optional): Get milk, eggs, and bread
+Enter priority (High/H, Medium/M, Low/L) [default: Medium]: H
 
-Task added successfully! (ID: 1)
+Task created successfully!
+ID: 1
+Title: Buy groceries
+Priority: High
+Description: Get milk, eggs, and bread
 
 Enter your choice (1-6): 2
 
-=== All Tasks ===
-[1] Buy groceries
-    Description: Get milk, eggs, and bread
-    Status: [ ] Incomplete
+--- Your Tasks ---
+
+[1] [!!!] [ ] Buy groceries
+    Get milk, eggs, and bread
+
+Total: 1 tasks (0 complete, 1 incomplete)
 ```
+
+**Priority Indicators:**
+- `[!!!]` = High priority
+- `[!!]` = Medium priority
+- `[!]` = Low priority
 
 ## Architecture
 
@@ -130,6 +144,9 @@ Phase 1 uses in-memory storage with Python dictionaries. Data is lost when the a
 ### Auto-Incrementing IDs
 Tasks receive sequential integer IDs (1, 2, 3, ...). Deleted IDs are not reused within a session, ensuring referential integrity.
 
+### Priority-Based Sorting
+Tasks are automatically sorted by priority level (High → Medium → Low), with chronological ordering (by ID) preserved within each priority group. This ensures important tasks always appear first while maintaining the order tasks were created.
+
 ### Menu-Driven Interface
 A numbered menu system provides:
 - Easy navigation
@@ -150,7 +167,7 @@ Detailed documentation is available in the `specs/` directory:
 
 - **No Persistence**: Data is stored in memory only and lost on exit
 - **Single Session**: No multi-user support or concurrent access
-- **Basic Features**: No priorities, categories, due dates, or search functionality
+- **Basic Features**: No categories, tags, due dates, or advanced search functionality
 - **Console Only**: No GUI or web interface
 
 These limitations will be addressed in future phases of the project.
@@ -160,8 +177,9 @@ These limitations will be addressed in future phases of the project.
 Planned features for future phases:
 - Phase 2: File-based persistence
 - Phase 3: Database integration
-- Phase 4: Priority levels and filtering
+- Phase 4: Categories, tags, and advanced filtering
 - Phase 5: Web interface
+- Additional: Due dates, reminders, and recurring tasks
 
 ## Contributing
 
